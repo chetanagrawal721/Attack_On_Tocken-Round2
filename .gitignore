@@ -1,0 +1,8 @@
+node_modules
+dist
+test-results
+.agents
+.claude
+skills-lock.json
+proof/videos/.last-run.json
+*.log
