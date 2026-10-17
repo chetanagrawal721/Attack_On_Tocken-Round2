@@ -22,7 +22,7 @@ function makeTiles(): Tile[] {
     dx: (rng() - 0.5) * 360,
     dy: (rng() - 0.5) * 260,
     dur: 1.6 + rng() * 1.8,
-    vol: i === 0 ? 1 : 0.4,
+    vol: i === 0 ? 1 : 0.8,
     start: i === 0 ? 0 : rng() * 1.5,
   }));
 }
@@ -37,7 +37,11 @@ function Clip({ t }: { t: Tile }) {
     const go = () => {
       try { if (t.start > 0) v.currentTime = t.start; } catch { /* ignore */ }
       const p = v.play();
-      if (p) p.catch(() => { v.muted = true; v.play().catch(() => {}); });
+      // Only fall back to muted when the browser really blocks sound. An AbortError (play interrupted by a
+      // pause/re-mount, e.g. React StrictMode in dev) must NOT mute the clip.
+      if (p) p.catch((e: unknown) => {
+        if ((e as DOMException)?.name === 'NotAllowedError') { v.muted = true; v.play().catch(() => {}); }
+      });
     };
     go();
     return () => { v.pause(); };
