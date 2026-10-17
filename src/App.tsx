@@ -9,6 +9,7 @@ import { RawProfile } from './components/RawProfile';
 import { after } from './state/scheduler';
 import { useStore, type TabId } from './state/store';
 import { Landing } from './components/landing/Landing';
+import { ActivityVideos } from './components/cinematic/ActivityVideos';
 import { preloadSounds } from './fx/sfx';
 import './components/landing/landing.css';
 import './components/landing/landing2.css';
@@ -111,6 +112,7 @@ function ProfileApp() {
       <FinaleModal />
       <ChatSheet />
       <CinematicHost />
+      <ActivityVideos />
       <Glyphs />
       <Toasts />
     </>

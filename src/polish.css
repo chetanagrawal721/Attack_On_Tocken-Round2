@@ -358,3 +358,8 @@ textarea:focus, .input:focus { outline: none; border-color: var(--accent); box-s
 @keyframes clipin { from { transform: scale(.4); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 .avatar-wrap .online { z-index: 2; }
 .avatar-wrap .photo-btn { z-index: 3; }
+
+/* ---- Activity: swarm of pop-up videos (never blocks clicks) ---- */
+.avs-layer { position: fixed; inset: 0; z-index: 315; pointer-events: none; overflow: hidden; }
+.avs-tile { position: absolute; aspect-ratio: 9 / 16; border-radius: 20px; overflow: hidden; background: #000; border: 3px solid var(--surface); box-shadow: 0 24px 50px -16px rgba(0, 0, 0, .55); will-change: transform; }
+.avs-video { width: 100%; height: 100%; object-fit: cover; display: block; }

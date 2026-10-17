@@ -226,3 +226,31 @@ test('CHANGE PHOTO: the picture pops out, profile_clip plays in the frame and pa
   expect(await page.getByTestId('avatar').getAttribute('src')).toBe(src0);
   await expect(page.getByTestId('display-name')).not.toHaveText(name0);
 });
+
+test('ACTIVITY: many copies of activity.mp4 pop up, play with sound, then vanish after ~4-5 s', async ({ page }) => {
+  const errors: string[] = [];
+  page.on('pageerror', (e) => errors.push(e.message));
+  await page.goto('/?test=1&reset=1&seed=11'); // real speed
+  await expect(page.getByTestId('follower-count')).toBeVisible();
+  await page.waitForTimeout(1000);
+  await page.getByTestId('tab-activity').click();
+  const t0 = Date.now();
+  const vids = page.locator('[data-testid=activity-videos] video');
+  await expect.poll(() => vids.count(), { timeout: 4000 }).toBeGreaterThanOrEqual(3);
+  await page.waitForTimeout(1800);
+  await page.screenshot({ path: 'proof/screens/v5-activity-videos.png' });
+  const info = await vids.evaluateAll((els) => els.map((v: any) => ({ paused: v.paused, muted: v.muted, vol: v.volume, src: v.getAttribute('src') })));
+  expect(info.length).toBeGreaterThanOrEqual(5); // several copies, all the same clip
+  expect(new Set(info.map((i) => i.src))).toEqual(new Set(['/media/activity.mp4']));
+  expect(info.filter((i) => !i.paused).length).toBeGreaterThanOrEqual(3); // actually playing
+  expect(info.some((i) => !i.muted)).toBe(true); // with sound
+  // the page stays usable underneath (overlay never blocks clicks) and Activity content is there
+  await expect(page.getByTestId('activity-feed')).toBeVisible();
+  // gone after about 4-5 seconds
+  await expect(page.locator('[data-testid=activity-videos][data-active="0"]')).toHaveCount(1, { timeout: 8000 });
+  const elapsed = Date.now() - t0;
+  expect(elapsed).toBeGreaterThan(3500);
+  expect(elapsed).toBeLessThan(7000);
+  await expect.poll(() => vids.count(), { timeout: 3000 }).toBe(0); // exit animation finishes
+  expect(errors).toEqual([]);
+});

@@ -49,6 +49,7 @@ interface Ephemeral {
   finaleOpen: boolean;
   view: 'landing' | 'profile';
   photoFx: number;
+  activityFx: number;
   photoClip: 'off' | 'poof' | 'play' | 'done';
   photoClipKey: number;
   callBlocked: boolean;
@@ -134,6 +135,7 @@ export const useStore = create<State>()(
       finaleOpen: false,
       view: initialView(),
       photoFx: 0,
+      activityFx: 0,
       photoClip: 'off',
       photoClipKey: 0,
       callBlocked: false,
@@ -194,6 +196,8 @@ export const useStore = create<State>()(
           return;
         }
         get().setTab(t);
+        // Activity: a swarm of videos pops up (see ActivityVideos)
+        if (t === 'activity' && prev !== 'activity' && !s.cinematic) set({ activityFx: get().activityFx + 1 });
         if (t === 'activity' && !s.flags.phantom) after(speed(900), () => get().phantomNotify());
       },
       setView: (v) => {
@@ -287,7 +291,7 @@ export const useStore = create<State>()(
       patch: (p) => set(p as any),
       resetAll: () => {
         if (followCancel) followCancel();
-        set({ ...initial(), tab: 'overview', cinematic: null, toasts: [], unstyled: false, gravity: false, blackout: false, photoBusy: false, bioOpen: false, highlightHalo: false, avatarGone: false, messageOpen: false, resumeOpen: false, finaleOpen: false, photoClip: 'off', callBlocked: false, override: {}, nameOverride: null, rearranged: false, unread: false, settingsOrder: [...SETTING_IDS], syncBanner: false, toggleCount: 0, typing: false, glyphs: [] });
+        set({ ...initial(), tab: 'overview', cinematic: null, toasts: [], unstyled: false, gravity: false, blackout: false, photoBusy: false, bioOpen: false, highlightHalo: false, avatarGone: false, messageOpen: false, resumeOpen: false, finaleOpen: false, activityFx: 0, photoClip: 'off', callBlocked: false, override: {}, nameOverride: null, rearranged: false, unread: false, settingsOrder: [...SETTING_IDS], syncBanner: false, toggleCount: 0, typing: false, glyphs: [] });
       },
     }),
     {

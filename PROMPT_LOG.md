@@ -811,6 +811,28 @@ how much time it takes
 
 ---
 
+## Prompt 21 — Push to GitHub
+
+```text
+https://github.com/chetanagrawal721/Attack_On_Tocken-Round2.git
+
+git puch complete website here okk
+```
+
+**What the agent did:** initialised a git repository, ignored generated and tooling folders, committed 142 files and pushed `main` to the repository (it was empty, so nothing was overwritten).
+
+---
+
+## Prompt 22 — Activity video swarm
+
+```text
+when i click activity button in the profile then suddenly a video i uploaded in media named (activity.mp4) starts playing but like multiple similar vido in the scrion movind randomly like pop up animantion of video opper then multiple same vido apper starts sounding and then stops after 4-5 sec so do this
+```
+
+**What the agent did:** clicking the Activity tab now spawns ten copies of `public/media/activity.mp4` that pop up with a spring animation, drift around the screen at random and play with sound, then all disappear after about 4.6 seconds. The overlay never blocks clicks. Added a real-time test and a screenshot.
+
+---
+
 ## Summary
 
 | # | Prompt | Result |
@@ -835,5 +857,7 @@ how much time it takes
 | 18 | taste-skill | Full professional redesign |
 | 19 | Reverse FAQ flow + Change Photo clip | Yes = profile, No = gunfire + warning; clip in avatar frame |
 | 20 | Time check | ~4 min test run |
+| 21 | Push to GitHub | Pushed to chetanagrawal721/Attack_On_Tocken-Round2 |
+| 22 | Activity video swarm | Ten pop-up copies of activity.mp4, sound, gone after ~4.6 s |
 
 **Where things are:** the code is in `src/`, the tests in `tests/`, the proof screenshots in `proof/screens/`, and the other docs in `docs/` and `README.md`.
